@@ -19,7 +19,7 @@ database={database};ServerCompatibilityMode=NoTypeLoading;";
         await using NpgsqlConnection connection = new NpgsqlConnection(connectionString);
         await connection.OpenAsync();
 
-        var sql = $"SELECT device,sensor,{dataName},timestamp FROM 'sensors_{dataName}' LIMIT 1000;";
+        var sql = $"SELECT device,sensor,{dataName},timestamp FROM 'sensors_{dataName}' ORDER by timestamp DESC  LIMIT 1000;";
 
         List<SensorData> temperatureData = new List<SensorData>();
         await using NpgsqlCommand command = new NpgsqlCommand(sql, connection);
