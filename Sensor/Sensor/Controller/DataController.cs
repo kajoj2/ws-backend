@@ -9,15 +9,24 @@ namespace Sensor.Sensor.Controller;
 [Route("[controller]")]
 public class DataController
 {
+    readonly QuestDbService _service = new QuestDbService();
     [HttpGet]
     public async Task<IActionResult> Sensor()
     {
-        QuestDbService service = new QuestDbService();
+        var data = await _service.GetTemperatureData("temperature");
 
-
-        var data = await service.GetTemperatureData("temperature");
         var json =  JsonConvert.SerializeObject(data);
         
          return new OkObjectResult(json);
     }
+
+    [HttpGet("{type}/24h/ChartData")]
+    public async Task<IActionResult> GetTemperature(string type)
+    {
+        var data = await _service.GetTemperatureData(type);
+        var json =  JsonConvert.SerializeObject(data);
+        
+        return new OkObjectResult(json);
+    }
+
 }
