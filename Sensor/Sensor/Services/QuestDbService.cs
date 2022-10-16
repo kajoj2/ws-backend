@@ -19,7 +19,7 @@ database={database};ServerCompatibilityMode=NoTypeLoading;";
         await using NpgsqlConnection connection = new NpgsqlConnection(connectionString);
         await connection.OpenAsync();
 
-        var sql = $"SELECT device,sensor, avg({dataName}),timestamp FROM 'sensors_{dataName}' WHERE timestamp  BETWEEN now() AND dateadd('d', -1, now()) SAMPLE BY 15m;";
+        var sql = $"SELECT device, avg({dataName}),timestamp FROM 'sensors_{dataName}' WHERE timestamp  BETWEEN now() AND dateadd('d', -1, now()) SAMPLE BY 15m;";
 
         List<SensorData> temperatureData = new List<SensorData>();
         await using NpgsqlCommand command = new NpgsqlCommand(sql, connection);
